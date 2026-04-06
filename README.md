@@ -46,7 +46,7 @@ spdk_app_start()
 | `spdk_bdev_get_io_channel` | Get per-thread I/O submission queue |
 | `aligned_alloc(4096)` | Page-aligned buffer (DMA path simulation) |
 | `malloc` | Unaligned buffer (non-DMA path) |
-| `spdk_bdev_write` / `spdk_bdev_read` | Async I/O — callback driven |
+| `spdk_bdev_write` / `spdk_bdev_read` | Async I/O, callback driven |
 | `spdk_bdev_free_io` | Must be called in every callback |
 | `spdk_app_stop` + `spdk_app_fini` | Clean shutdown + hugepage release |
 
@@ -98,7 +98,7 @@ Two time functions are used intentionally:
 | Read CPU cycles | 12,549 | 1,660 |
 | Verify | PASS | PASS |
 
-The aligned path is ~13× slower on first I/O due to a **page fault** — `aligned_alloc` reserves virtual address space but does not touch physical pages until first access. The unaligned `malloc` buffer was already faulted in by the OS.
+The aligned path is ~13× slower on first I/O due to a **page fault**-`aligned_alloc`, which reserves virtual address space but does not touch physical pages until first access. The unaligned `malloc` buffer was already faulted in by the OS.
 
 ### Steady state (1000 iterations)
 
